@@ -42,8 +42,7 @@ public class MyTest {
     public void mainTest() throws URISyntaxException {
 	String downloadlocation = "http://www.slub-dresden.de" + "/sammlungen"
 		+ "/digitale-sammlungen/" + "oai/" + "?verb=GetRecord"
-		+ "&metadataPrefix=mets"
-		+ "&identifier=oai:de:slub-dresden:db:";
+		+ "&metadataPrefix=mets" + "&identifier=oai:de:";
 	String oailocation = "http://www.slub-dresden.de" + "/sammlungen"
 		+ "/digitale-sammlungen/" + "oai/";
 	String oaiset = "15th-century-prints";
@@ -54,7 +53,7 @@ public class MyTest {
 	String oaitimestamp = "oaitimestamp-test";
 	String fedoraUrl = "http://localhost:8080/fedora";
 	String pidlist = getClass().getResource("/pidl.txt").getPath();
-	Main.main(new String[] { "--mode", "PIDL", "--user", user,
+	Main.main(new String[] { "--mode", "INIT", "--user", user,
 		"--password", password, "--dtl", downloadlocation, "-cache",
 		localcache, "--oai", oailocation, "--set", oaiset,
 		"--timestamp", oaitimestamp, "--fedoraBase", fedoraUrl,

@@ -18,9 +18,7 @@ package de.nrw.hbz.regal;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -82,13 +80,9 @@ public class MyDownloader extends Downloader {
 	URL dataStreamUrl;
 	try {
 	    dataStreamUrl = new URL(url);
-
 	    File dataStreamFile = new File(dir.getAbsolutePath()
 		    + File.separator + "" + pid + ".xml");
-	    // dataStreamFile.createNewFile();
-
 	    logger.info("Save: " + dataStreamFile.getAbsolutePath());
-
 	    String data = null;
 	    StringWriter writer = new StringWriter();
 	    IOUtils.copy(dataStreamUrl.openStream(), writer);
@@ -104,12 +98,9 @@ public class MyDownloader extends Downloader {
 
     private void download(File dir, String url) throws IOException {
 	URL dataStreamUrl = new URL(url);
-	InputStream in = null;
-	FileOutputStream out = null;
 	File file = new File(dir.getAbsolutePath() + File.separator
 		+ dataStreamUrl.getFile());
 	logger.info("Download target: " + file.getAbsolutePath());
-
 	String data = null;
 	StringWriter writer = new StringWriter();
 	IOUtils.copy(dataStreamUrl.openStream(), writer);
