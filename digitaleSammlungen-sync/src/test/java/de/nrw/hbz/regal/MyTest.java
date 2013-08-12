@@ -40,17 +40,21 @@ public class MyTest {
 
     @Test
     public void mainTest() throws URISyntaxException {
-	String downloadlocation = "http://fhdd.opus.hbz-nrw.de/oai2/oai2.php?verb=GetRecord&metadataPrefix=XMetaDissPlus&identifier=oai:fhdd.opus.hbz-nrw.de:";
-	String oailocation = "http://fhdd.opus.hbz-nrw.de/oai2/oai2.php";
-	String oaiset = "has-source-swb:false";
+	String downloadlocation = "http://www.slub-dresden.de" + "/sammlungen"
+		+ "/digitale-sammlungen/" + "oai/" + "?verb=GetRecord"
+		+ "&metadataPrefix=mets"
+		+ "&identifier=oai:de:slub-dresden:db:";
+	String oailocation = "http://www.slub-dresden.de" + "/sammlungen"
+		+ "/digitale-sammlungen/" + "oai/";
+	String oaiset = "15th-century-prints";
 
-	String password = "your-regal-password";
-	String user = "your-regal-user";
-	String localcache = "/tmp/test/";
+	String password = "schnasse";
+	String user = "jan";
+	String localcache = "/tmp/test/digitaleSammlungen/";
 	String oaitimestamp = "oaitimestamp-test";
 	String fedoraUrl = "http://localhost:8080/fedora";
-	String pidlist = "pidlist.txt";
-	Main.main(new String[] { "--mode", "INIT", "--user", user,
+	String pidlist = getClass().getResource("/pidl.txt").getPath();
+	Main.main(new String[] { "--mode", "PIDL", "--user", user,
 		"--password", password, "--dtl", downloadlocation, "-cache",
 		localcache, "--oai", oailocation, "--set", oaiset,
 		"--timestamp", oaitimestamp, "--fedoraBase", fedoraUrl,
