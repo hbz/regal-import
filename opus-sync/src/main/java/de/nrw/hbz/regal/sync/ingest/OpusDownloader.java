@@ -26,10 +26,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Vector;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import de.nrw.hbz.regal.sync.extern.XmlUtils;
 
 /**
  * 
@@ -86,61 +91,73 @@ public class OpusDownloader extends Downloader {
     private void downloadPdfs(File dir, String pid) {
 	Vector<String> files = new Vector<String>();
 	String identifier = null;
-	Element xMetaDissPlus = getDocument(new File(dir.getAbsolutePath()
-		+ File.separator + pid + ".xml"));
+	try {
+	    Element xMetaDissPlus = XmlUtils.getDocument(new File(dir
+		    .getAbsolutePath() + File.separator + pid + ".xml"));
 
-	NodeList identifiers = xMetaDissPlus
-		.getElementsByTagName("ddb:identifier");
+	    NodeList identifiers = xMetaDissPlus
+		    .getElementsByTagName("ddb:identifier");
 
-	for (int i = 0; i < identifiers.getLength(); i++) {
-	    Element id = (Element) identifiers.item(i);
-	    identifier = id.getTextContent();
-	}
-
-	NodeList transferUrls = xMetaDissPlus
-		.getElementsByTagName("ddb:transfer");
-
-	if (transferUrls == null || transferUrls.getLength() == 0) {
-	    // opus 3.2 hbz slang
-	    NodeList fileProperties = xMetaDissPlus
-		    .getElementsByTagName("ddb:fileProperties");
-
-	    for (int i = 0; i < fileProperties.getLength(); i++) {
-		Element fileProperty = (Element) fileProperties.item(i);
-		String filename = fileProperty.getAttribute("ddb:fileName");
-		files.add(filename);
+	    for (int i = 0; i < identifiers.getLength(); i++) {
+		Element id = (Element) identifiers.item(i);
+		identifier = id.getTextContent();
 	    }
 
-	    for (int i = 0; i < fileProperties.getLength(); i++) {
-		Element fileProperty = (Element) fileProperties.item(i);
-		String filename = fileProperty.getAttribute("ddb:fileName");
-		files.add(filename);
-	    }
+	    NodeList transferUrls = xMetaDissPlus
+		    .getElementsByTagName("ddb:transfer");
 
-	    int i = 0;
-	    for (String file : files) {
+	    if (transferUrls == null || transferUrls.getLength() == 0) {
+		// opus 3.2 hbz slang
+		NodeList fileProperties = xMetaDissPlus
+			.getElementsByTagName("ddb:fileProperties");
 
-		try {
-		    if (file.endsWith("pdf")) {
-			i++;
-			download(dir.getAbsoluteFile() + File.separator + pid
-				+ "_" + i + ".pdf", identifier + "/pdf/" + file);
+		for (int i = 0; i < fileProperties.getLength(); i++) {
+		    Element fileProperty = (Element) fileProperties.item(i);
+		    String filename = fileProperty.getAttribute("ddb:fileName");
+		    files.add(filename);
+		}
+
+		for (int i = 0; i < fileProperties.getLength(); i++) {
+		    Element fileProperty = (Element) fileProperties.item(i);
+		    String filename = fileProperty.getAttribute("ddb:fileName");
+		    files.add(filename);
+		}
+
+		int i = 0;
+		for (String file : files) {
+
+		    try {
+			if (file.endsWith("pdf")) {
+			    i++;
+			    download(dir.getAbsoluteFile() + File.separator
+				    + pid + "_" + i + ".pdf", identifier
+				    + "/pdf/" + file);
+			}
+		    } catch (IOException e) {
+			logger.error(e.getMessage());
 		    }
-		} catch (IOException e) {
-		    logger.error(e.getMessage());
+		}
+	    } else {// qucosa slang
+		for (int i = 0; i < transferUrls.getLength(); i++) {
+		    Element transferUrl = (Element) transferUrls.item(i);
+		    String url = transferUrl.getTextContent();
+		    try {
+			download(dir.getAbsoluteFile() + File.separator + pid
+				+ "_" + (i + 1) + ".pdf", url);
+		    } catch (IOException e) {
+			logger.error(e.getMessage());
+		    }
 		}
 	    }
-	} else {// qucosa slang
-	    for (int i = 0; i < transferUrls.getLength(); i++) {
-		Element transferUrl = (Element) transferUrls.item(i);
-		String url = transferUrl.getTextContent();
-		try {
-		    download(dir.getAbsoluteFile() + File.separator + pid + "_"
-			    + (i + 1) + ".pdf", url);
-		} catch (IOException e) {
-		    logger.error(e.getMessage());
-		}
-	    }
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (ParserConfigurationException e1) {
+	    // TODO Auto-generated catch block
+	    e1.printStackTrace();
+	} catch (SAXException e1) {
+	    // TODO Auto-generated catch block
+	    e1.printStackTrace();
 	}
     }
 
