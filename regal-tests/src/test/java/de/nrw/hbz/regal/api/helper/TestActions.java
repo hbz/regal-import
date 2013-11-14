@@ -236,9 +236,8 @@ public class TestActions {
     public void oaidc() throws IOException {
 	createTestObject("123");
 	actions.addUrn("123", "test", "test");
-	String schemaDecl = ""; // "<!DOCTYPE oai_dc PUBLIC \"http://www.openarchives.org/OAI/2.0/oai_dc.xsd\" \"\">\n";
 	URL schema = new URL("http://www.openarchives.org/OAI/2.0/oai_dc.xsd");
-	String xmlString = schemaDecl + actions.oaidc("test:123");
+	String xmlString = actions.oaidc("test:123");
 	XmlUtils.validate(
 		new ByteArrayInputStream(xmlString.getBytes("UTF-8")),
 		schema.openStream());
