@@ -7,8 +7,8 @@ install:
   - cd ~/opt/regal/bin
   - cp -r ~/opt/regal/src/regal-installer/* .
   - mv variables.conf.tmpl variables.conf
-  - ./configure.sh
-  - ./install-all.sh
-  - ./copy-config.sh
-  - ./restart-all.sh
-  - ./run-integration-tests.sh
+  - sh configure.sh
+  - sh install-all.sh
+  - sh copy-config.sh
+  - sh restart-all.sh
+  - sh run-integration-tests.sh
