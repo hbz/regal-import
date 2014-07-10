@@ -104,9 +104,7 @@ java -jar fcrepo-installer-3.7.1.jar  $ARCHIVE_HOME/conf/install.properties
 echo "install elasticsearch"
 tar -xzf elasticsearch-1.1.0.tar.gz
 mv elasticsearch-1.1.0 $ARCHIVE_HOME/elasticsearch
-pwd
-cp variables.conf $ARCHIVE_HOME/bin/
-cp -r templates $ARCHIVE_HOME/bin/
+
 cd $ARCHIVE_HOME/src/regal-archive
 mvn clean install >> $ARCHIVE_HOME/logs/regal-build.log
 cd -
@@ -181,7 +179,7 @@ export CATALINA_HOME=$FEDORA_HOME/tomcat
 
 function installApi
 {
-cd $SRC/regal-api
+cd $ARCHIVE_HOME/src/regal-api
 mvn clean install
 mvn play2:start
 cd -
