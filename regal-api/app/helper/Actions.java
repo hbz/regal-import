@@ -451,6 +451,8 @@ public class Actions {
      *            the parent of a new rsource
      * @param transformers
      *            transformers connected to the resource
+     * @param accessScheme
+     *            a string that signals who is allowed to access this node
      * @param input
      *            the input defines the contenttype and a optional parent
      * @param rawPid

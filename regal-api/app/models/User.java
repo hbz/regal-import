@@ -48,6 +48,10 @@ public class User {
 	    String dn = dnFromUser(username);
 	    properties.put(Context.SECURITY_PRINCIPAL, dn);
 	    properties.put(Context.SECURITY_CREDENTIALS, password);
+	    /*
+	     * the next call ends in an exception if credentials are not valid
+	     */
+	    @SuppressWarnings("unused")
 	    InitialDirContext context = new InitialDirContext(properties);
 	    String group = groupFromUser(username);
 	    role = group;

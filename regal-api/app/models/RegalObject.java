@@ -110,10 +110,17 @@ public class RegalObject {
 	this.indexes = indexes;
     }
 
+    /**
+     * @return a string that signals who is allowed to access this node
+     */
     public String getAccessScheme() {
 	return accessScheme;
     }
 
+    /**
+     * @param accessScheme
+     *            a string that signals who is allowed to access this node
+     */
     public void setAccessScheme(String accessScheme) {
 	this.accessScheme = accessScheme;
     }
