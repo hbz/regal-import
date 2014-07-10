@@ -1,9 +1,14 @@
 language: java
-jdk: oraclejdk7
+jdk: oraclejdk8
 install:
-  - mvn clean install -e --settings settings.xml
-before_script:
-  - 
-script:
-  - 
-  
+  - mkdir -p ~/opt/regal/bin
+  - cd ~/opt/regal
+  - git clone http://github.com/edoweb/regal.git src
+  - cd ~/opt/regal/bin
+  - cp -r ~/opt/regal/src/regal-installer/* .
+  - mv variables.conf.tmpl variables.conf
+  - ./configure.sh
+  - ./install-all.sh
+  - ./copy-config.sh
+  - ./restart-all.sh
+  - ./run-integration-tests.sh

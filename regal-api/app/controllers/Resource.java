@@ -218,7 +218,6 @@ public class Resource extends MyController {
 		    object.getParentPid(), object.getTransformer(),
 		    object.getAccessScheme(), p[1], p[0]);
 	    String result = node.getPID() + " created/updated!";
-
 	    return JsonResponse(new Message(result, 200));
 	} catch (HttpArchiveException e) {
 	    return JsonResponse(new Message(e, e.getCode()), e.getCode());
