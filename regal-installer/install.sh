@@ -10,7 +10,6 @@ function makeDir()
 {
 echo "Create ARCHIVE_HOME $ARCHIVE_HOME"
 mkdir -v -p $ARCHIVE_HOME/src
-mkdir -v $ARCHIVE_HOME/html
 mkdir -v $ARCHIVE_HOME/sync
 mkdir -v $ARCHIVE_HOME/fedora
 if [ -n $MODULE ]
@@ -108,8 +107,14 @@ mv elasticsearch-1.1.0 $ARCHIVE_HOME/elasticsearch
 pwd
 cp variables.conf $ARCHIVE_HOME/bin/
 cp -r templates $ARCHIVE_HOME/bin/
+cd $ARCHIVE_HOME/src/regal-archive
+mvn clean install >> $ARCHIVE_HOME/logs/regal-build.log
+cd -
+cd $ARCHIVE_HOME/src/regal-mabconverter
+mvn clean install >> $ARCHIVE_HOME/logs/regal-build.log
+cd -
 cd $ARCHIVE_HOME/src/
-mvn clean install -DskipTests >> $ARCHIVE_HOME/logs/regal-build.log
+mvn clean install >> $ARCHIVE_HOME/logs/regal-build.log
 cd -
 }
 
@@ -159,117 +164,27 @@ mvn -e clean install -DskipTests --settings settings.xml >> $ARCHIVE_HOME/logs/r
 cd -
 }
 
-
-function correctSwagger()
-{
-var=$1
-cd $ARCHIVE_HOME/html/doc
-number=`grep -n "models" ${var}.json |cut -f1 -d:`
-number=`expr $number - 1`
-if [ $? -eq 0 ]
-then
-head -$number ${var}.json > tmpres
-echo '"swaggerVersion" : "1.1","resourcePath" : "/${var}"}' >> tmpres
-mv tmpres ${var}.json
-fi
-cd -
-}
-
-function copySwagger()
-{
-
-cp -r $ARCHIVE_HOME/src/regal-api/target/classes/apidocs/* $ARCHIVE_HOME/html/doc
-if [ $? -eq 0 ]
-then
-cp $ARCHIVE_HOME/html/doc/service.json templates
-cp $ARCHIVE_HOME/html/index.html templates
-substituteVars service.json $ARCHIVE_HOME/html/doc/service.json
-substituteVars index.html $ARCHIVE_HOME/html/index.html
-correctSwagger utils > /dev/null 2>&1;
-correctSwagger resource;
-fi
-}
-
-
-
 function rollout()
 {
 setSystemVars
 
-linkCacheToHtmlRoot
-
-shutdownTomcat
-
 installApi
 
-installOaiPmh
-
-startUpTomcat
-
 buildModule
-
-copyHtml
-
 }
 
 function setSystemVars
 {
 export FEDORA_HOME=$ARCHIVE_HOME/fedora
 export CATALINA_HOME=$FEDORA_HOME/tomcat
-
-}
-
-
-function copyHtml
-{
-echo "copy html"
-cp $ARCHIVE_HOME/conf/Identify.xml $ARCHIVE_HOME/html/
-cp $ARCHIVE_HOME/conf/robots.txt $ARCHIVE_HOME/html/
-cp $ARCHIVE_HOME/conf/favicon.ico $ARCHIVE_HOME/html/
-echo "Copy api Doku"
-copySwagger
-}
-
-function startUpTomcat
-{
-$ARCHIVE_HOME/fedora/tomcat/bin/startup.sh
-}
-
-function installOaiPmh
-{
-echo "Please install proai manually"
-#SRC=$ARCHIVE_HOME/src
-#WEBAPPS=$ARCHIVE_HOME/fedora/tomcat/webapps
-#rm -rf  $WEBAPPS/oai-pmh*
-#cp $SRC/regal-ui/bin/oai-pmh.war $WEBAPPS
 }
 
 function installApi
 {
 cd $SRC/regal-api
-play stop
-play clean compile stage
+mvn clean install
+mvn play2:start
 cd -
-}
-
-function shutdownTomcat
-{
-$ARCHIVE_HOME/fedora/tomcat/bin/shutdown.sh > /dev/null 2>&1
-if [ $? -eq 0 ]
-then
-	echo "Tomcat successfully shutdown!"
-else
-	echo "Tomcat shutdown failed!"
-fi
-}
-
-function linkCacheToHtmlRoot
-{
-if [ ! -d $ARCHIVE_HOME/${MODULE}base ]
-then
-	mkdir -v $ARCHIVE_HOME/${MODULE}base
-	ln -s $ARCHIVE_HOME/${MODULE}base $ARCHIVE_HOME/html/${MODULE}base > /dev/null 2>&1
-fi
 }
 
 function buildModule
@@ -287,8 +202,6 @@ then
 	mvn -q -e assembly:assembly -DskipTests --settings ../settings.xml >> $ARCHIVE_HOME/logs/regal-build.log
 	cd -
 	cp $SYNCER_SRC $SYNCER_DEST 
-	
-
 	echo -e "#! /bin/bash" > ${NAMESPACE}Sync.sh.tmpl
 	echo -e "" >> ${NAMESPACE}Sync.sh.tmpl
 	echo -e "source $ARCHIVE_HOME/sync/${NAMESPACE}Variables.conf" >> ${NAMESPACE}Sync.sh.tmpl

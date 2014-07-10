@@ -23,6 +23,7 @@
 						<id>play-installation</id>
 						<goals>
 							<goal>install-play</goal>
+							<buildDist>false</buildDist>
 						</goals>
 						<phase>validate</phase>
 						<configuration>
