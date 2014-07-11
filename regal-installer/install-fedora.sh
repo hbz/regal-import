@@ -1,4 +1,4 @@
-#! /bin/bash -x
+#! /bin/bash
 
 source variables.conf
 
@@ -9,5 +9,5 @@ else
 	wget http://sourceforge.net/projects/fedora-commons/files/fedora/3.7.1/fcrepo-installer-3.7.1.jar 
 fi
 
-export FEDORA_ARCHIVE_HOME=$ARCHIVE_HOME/fedora
+export FEDORA_HOME=$ARCHIVE_HOME/fedora
 java -jar fcrepo-installer-3.7.1.jar  $ARCHIVE_HOME/conf/install.properties

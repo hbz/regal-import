@@ -16,7 +16,7 @@
 				<version>1.2.4</version>
 				<extensions>true</extensions>
 				<configuration>
-					<play2Home>${playInstallDirectory}/opt/play-${play2.version}</play2Home>
+					<play2Home>${playInstallDirectory}/play-${play2.version}</play2Home>
 				</configuration>
 				<executions>
 					<execution>
@@ -27,12 +27,12 @@
 						<phase>validate</phase>
 						<configuration>
 							<play2version>${play2.version}</play2version>
-							<play2basedir>${user.home}/opt</play2basedir>
+							<play2basedir>${playInstallDirectory}</play2basedir>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
+	
 </project>

@@ -12,6 +12,6 @@ cd $ARCHIVE_HOME/src/
 mvn clean install >> $ARCHIVE_HOME/logs/regal-build.log
 cd -
 cd $ARCHIVE_HOME/src/regal-api
-mvn clean install -DplayInstallDirectory=$ARCHIVE_HOME/play
-mvn play2:start -DplayInstallDirectory=$ARCHIVE_HOME/play
+mvn clean install -DplayInstallDirectory=$ARCHIVE_HOME -Dplay2version=2.2.3 >> $ARCHIVE_HOME/logs/regal-build.log
+mvn play2:start -DplayInstallDirectory=$ARCHIVE_HOME -Dplay2version=2.2.3 >> $ARCHIVE_HOME/logs/regal-build.log
 cd -
