@@ -2,9 +2,10 @@ language: java
 jdk: oraclejdk8
 
 before_install:
-  - mkdir -p target/opt/regal/bin
-  - ln -s . target/opt/regal/src
-  - cd regal-installer/
+  - mkdir -p /home/travis/build/jschnasse/regal/target/opt/regal/bin
+  - ln -s . /home/travis/build/jschnasse/regal/target/opt/regal/src
+  - cd /home/travis/build/jschnasse/regal/target/opt/regal/bin
+  - cp -r /home/travis/build/jschnasse/regal/target/opt/regal/src/regal-installer/* .
   - mv variables.conf.tmpl variables.conf
   - ./configure.sh
   - ./install-all.sh
