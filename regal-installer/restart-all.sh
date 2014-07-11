@@ -10,7 +10,7 @@ kill `ps -eaf|grep tomcat|awk '{print $2}'|head -1`
 
 cd $ARCHIVE_HOME/src/regal-api
 kill `ps -eaf|grep regal-api|awk '{print $2}'|head -1`
-mvn play2:start -DplayInstallDirectory=$ARCHIVE_HOME/play
+nohup $ARCHIVE_HOME/play-2.2.3/play start &
 cd -
 
 

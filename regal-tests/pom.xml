@@ -253,7 +253,7 @@
 		<dependency>
 			<groupId>com.typesafe.play</groupId>
 			<artifactId>play_2.10</artifactId>
-			<version>${play2.version}</version>
+			<version>2.2.3</version>
 		</dependency>
 	</dependencies>
 </project> 

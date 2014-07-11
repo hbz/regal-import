@@ -13,6 +13,8 @@ echo "Install Elasticsearch"
 ./install-elasticsearch.sh
 echo "Install Fedora"
 ./install-fedora.sh
+echo "Install Play2"
+./install-play.sh
 echo "Install Regal API"
 ./install-regal-api.sh
 }
