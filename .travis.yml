@@ -6,7 +6,7 @@ before_install:
   - ln -s /home/travis/build/jschnasse/regal /home/travis/build/jschnasse/regal/target/opt/regal/src
   - cd /home/travis/build/jschnasse/regal/target/opt/regal/bin
   - cp -r /home/travis/build/jschnasse/regal/regal-installer/* .
-  - mv variables.conf.tmpl variables.conf
+  - sed s%~%/home/travis/build/jschnasse/regal/target% variables.conf.tmpl > variables.conf
   - ./configure.sh
   - ./install-all.sh
   - ./copy-config.sh
