@@ -2,15 +2,10 @@ language: java
 jdk: oraclejdk8
 
 before_install:
-  - mkdir -p ../opt/regal/bin
-  - ln -s . ../opt/regal/src
-  - cd ../opt/regal/bin
-  - pwd
-  - ls
-  - cp -r ../src/regal-installer/* .
+  - mkdir -p target/opt/regal/bin
+  - ln -s . target/opt/regal/src
+  - cd regal-installer/
   - mv variables.conf.tmpl variables.conf
-  - pwd
-  - ls
   - sh configure.sh
   - sh install-all.sh
   - sh copy-config.sh
