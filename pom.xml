@@ -218,5 +218,6 @@
 		<module>ellinet-oai</module>
 		<module>opus-sync</module>
 		<module>regal-mabconverter</module>
+		<module>regal-api</module>
 	</modules>
 </project>
