@@ -6,8 +6,8 @@ before_install:
   - ln -s . target/opt/regal/src
   - cd regal-installer/
   - mv variables.conf.tmpl variables.conf
-  - sh configure.sh
-  - sh install-all.sh
-  - sh copy-config.sh
-  - sh restart-all.sh
-  - sh run-integration-tests.sh
+  - ./configure.sh
+  - ./install-all.sh
+  - ./copy-config.sh
+  - ./restart-all.sh
+  - ./run-integration-tests.sh
