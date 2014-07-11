@@ -1,4 +1,4 @@
-#! /bin/bash -x
+#! /bin/bash
 
 if [ -f elasticsearch-1.1.0.deb ]
 then

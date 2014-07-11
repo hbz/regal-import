@@ -16,7 +16,7 @@
 				<version>1.2.4</version>
 				<extensions>true</extensions>
 				<configuration>
-					<play2Home>${user.home}/opt/play-${play2.version}</play2Home>
+					<play2Home>${playInstallDirectory}/opt/play-${play2.version}</play2Home>
 				</configuration>
 				<executions>
 					<execution>
