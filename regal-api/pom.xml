@@ -13,7 +13,7 @@
 				<version>1.2.4</version>
 				<extensions>true</extensions>
 				<configuration>
-					<play2Home>${user.home}/opt/play-${play2.version}</play2Home>
+					<play2Home>${user.home}/opt/regal/play-2.2.3</play2Home>
 				</configuration>
 				<executions>
 					<execution>
@@ -23,8 +23,8 @@
 						</goals>
 						<phase>validate</phase>
 						<configuration>
-							<play2version>${play2.version}</play2version>
-							<play2basedir>${user.home}/opt</play2basedir>
+							<play2version>2.2.3</play2version>
+							<play2basedir>${user.home}/opt/regal</play2basedir>
 						</configuration>
 					</execution>
 				</executions>
