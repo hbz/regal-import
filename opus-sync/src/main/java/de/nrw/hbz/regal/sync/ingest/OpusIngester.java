@@ -40,63 +40,61 @@ import de.nrw.hbz.regal.sync.extern.StreamType;
  * 
  */
 public class OpusIngester implements IngestInterface {
-    final static Logger logger = LoggerFactory.getLogger(OpusIngester.class);
+	final static Logger logger = LoggerFactory.getLogger(OpusIngester.class);
 
-    private String namespace = "opus";
-    String host = null;
-    Webclient webclient = null;
-    HashMap<String, String> map = new HashMap<String, String>();
+	private String namespace = "opus";
+	String host = null;
+	Webclient webclient = null;
+	HashMap<String, String> map = new HashMap<String, String>();
 
-    @Override
-    public void init(String host, String user, String password, String ns,
-	    KeystoreConf kconf) {
-	this.namespace = ns;
-	this.host = host;
-	webclient = new Webclient(namespace, user, password, host, kconf);
-    }
-
-    @Override
-    public void ingest(DigitalEntity dtlBean) {
-	String pid = dtlBean.getPid().replace(':', '-');
-	dtlBean.setPid(pid);
-	// pid = pid.substring(pid.lastIndexOf(':') + 1);
-	logger.info("Start ingest: " + namespace + ":" + pid);
-
-	updateMonograph(dtlBean);
-
-    }
-
-    @Override
-    public void update(DigitalEntity dtlBean) {
-	ingest(dtlBean);
-    }
-
-    private void updateMonograph(DigitalEntity dtlBean) {
-	String pid = dtlBean.getPid();
-
-	map.clear();
-	try {
-	    webclient.createObject(dtlBean, ObjectType.monograph);
-	    logger.info(pid + " " + "updated.\n");
-	    OpusMapping mapper = new OpusMapping();
-	    String metadata = mapper.map(
-		    dtlBean.getStream(StreamType.xMetaDissPlus).getFile(),
-		    namespace + ":" + dtlBean.getPid());
-
-	    webclient.autoGenerateMetadataMerge(dtlBean, metadata);
-	    webclient.makeOaiSet(dtlBean);
-	} catch (IllegalArgumentException e) {
-	    logger.debug(e.getMessage());
+	@Override
+	public void init(String host, String user, String password, String ns, KeystoreConf kconf) {
+		this.namespace = ns;
+		this.host = host;
+		webclient = new Webclient(namespace, user, password, host, kconf);
 	}
-    }
 
-    @Override
-    public void delete(String pid) {
-	webclient.purgeId(pid.substring(pid.lastIndexOf(':') + 1));
-    }
+	@Override
+	public void ingest(DigitalEntity dtlBean) {
+		String pid = dtlBean.getPid().replace(':', '-');
+		dtlBean.setPid(pid);
+		// pid = pid.substring(pid.lastIndexOf(':') + 1);
+		logger.info("Start ingest: " + namespace + ":" + pid);
 
-    @Override
-    public void test() {
-	throw new RuntimeException("unimplemented");
-    }
+		updateMonograph(dtlBean);
+
+	}
+
+	@Override
+	public void update(DigitalEntity dtlBean) {
+		ingest(dtlBean);
+	}
+
+	private void updateMonograph(DigitalEntity dtlBean) {
+		String pid = dtlBean.getPid();
+
+		map.clear();
+		try {
+			webclient.createObject(dtlBean, ObjectType.monograph);
+			logger.info(pid + " " + "updated.\n");
+			OpusMapping mapper = new OpusMapping();
+			String metadata = mapper.map(dtlBean.getStream(StreamType.xMetaDissPlus).getFile(),
+					namespace + ":" + dtlBean.getPid());
+
+			webclient.autoGenerateMetadataMerge(dtlBean, metadata);
+			webclient.makeOaiSet(dtlBean);
+		} catch (IllegalArgumentException e) {
+			logger.debug(e.getMessage());
+		}
+	}
+
+	@Override
+	public void delete(String pid) {
+		webclient.purgeId(pid.substring(pid.lastIndexOf(':') + 1));
+	}
+
+	@Override
+	public void test() {
+		throw new RuntimeException("unimplemented");
+	}
 }

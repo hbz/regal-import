@@ -185,7 +185,7 @@ public abstract class Downloader implements DownloaderInterface {
     final static protected Logger logger = LoggerFactory
 	    .getLogger(Downloader.class);
     String downloadLocation = null;
-    String server = null;
+    protected String server = null;
     boolean updated = false;
     boolean downloaded = false;
     HashMap<String, String> map = new HashMap<String, String>();
