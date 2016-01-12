@@ -14,24 +14,23 @@
  * limitations under the License.
  *
  */
-package de.nrw.hbz.regal.sync.ingest;
+package de.nrw.hbz.regal;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import de.nrw.hbz.regal.sync.OpusMain;
+import de.nrw.hbz.regal.sync.Main;
 
 /**
  * @author Jan Schnasse schnasse@hbz-nrw.de
  * 
  */
 @SuppressWarnings("javadoc")
-public class KolaTest {
+public class MainTest {
 	String namespace;
 	String password;
 	String user;
@@ -60,7 +59,8 @@ public class KolaTest {
 	@Before
 	public void setUp() throws IOException {
 		Properties properties = new Properties();
-		properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("kola_test.properties"));
+		properties.load(
+				Thread.currentThread().getContextClassLoader().getResourceAsStream("regal-mirror-test.properties"));
 		namespace = properties.getProperty("namespace");
 		password = properties.getProperty("password");
 		user = properties.getProperty("user");
@@ -77,24 +77,20 @@ public class KolaTest {
 	}
 
 	@Test
-	public void mappingTest() throws URISyntaxException {
-		OpusMapping mapping = new OpusMapping();
-		File file = new File(Thread.currentThread().getContextClassLoader().getResource("testObject.xml").toURI());
-		System.out.println(mapping.map(file, "mysubject:1"));
-
-	}
-
 	public void mainTest() {
 
 		pidlist = Thread.currentThread().getContextClassLoader().getResource(pidlist).toString().substring(5);
-		OpusMain.main(new String[] { "--mode", "PIDL", "--user", user, "--password", password, "--dtl", downloadHost,
+		Main.main(new String[] { "--mode", "INIT", "--user", user, "--password", password, "--dtl", downloadHost,
 				"-cache", localcache, "--oai", oaiHost, "--set", oaiSet, "--timestamp", oaitimestamp, "--fedoraBase",
-				fedoraUrl, "--host", "api.localhost", "-list", pidlist, "-namespace", "test", "-keystoreLocation",
+				fedoraUrl, "--host", "http://localhost", "-list", pidlist, "-namespace", "test", "-keystoreLocation",
 				keystoreLocation, "-keystorePassword", keystorePassword });
-		OpusMain.main(new String[] { "--mode", "DELE", "--user", user, "--password", password, "--dtl", downloadHost,
-				"-cache", localcache, "--oai", oaiHost, "--set", oaiSet, "--timestamp", oaitimestamp, "--fedoraBase",
-				fedoraUrl, "--host", "api.localhost", "-list", pidlist, "-namespace", "test", "-keystoreLocation",
-				keystoreLocation, "-keystorePassword", keystorePassword });
+		// Main.main(new String[] { "--mode", "DELE", "--user", user,
+		// "--password", password, "--dtl", downloadHost,
+		// "-cache", localcache, "--oai", oaiHost, "--set", oaiSet,
+		// "--timestamp", oaitimestamp, "--fedoraBase",
+		// fedoraUrl, "--host", "api.localhost", "-list", pidlist, "-namespace",
+		// "test", "-keystoreLocation",
+		// keystoreLocation, "-keystorePassword", keystorePassword });
 		File timestamp = new File(oaitimestamp);
 		timestamp.deleteOnExit();
 
